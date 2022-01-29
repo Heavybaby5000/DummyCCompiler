@@ -1,7 +1,8 @@
-#include "llvm/Assembly/PrintModulePass.h"
-#include "llvm/LLVMContext.h"
-#include "llvm/Module.h"
-#include "llvm/PassManager.h"
+#include "llvm/IR/IRPrintingPasses.h"
+#include "llvm/IR/LLVMContext.h"
+#include "llvm/IR/Module.h"
+#include "llvm/IR/LegacyPassManager.h"
+//#include "llvm/IR/PassManager.h"
 #include "llvm/LinkAllPasses.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/FormattedStream.h"
@@ -95,7 +96,7 @@ bool OptionParser::parseOption(){
  */
 int main(int argc, char **argv) {
 	llvm::InitializeNativeTarget();
-	llvm::sys::PrintStackTraceOnErrorSignal();
+	llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 	llvm::PrettyStackTraceProgram X(argc, argv);
 
 	llvm::EnableDebugBuffering = true;
@@ -144,12 +145,12 @@ int main(int argc, char **argv) {
 	}
 
 	
-	llvm::PassManager pm;
+	llvm::legacy::PassManager pm;
 
 	//出力
-	std::string error;
+	std::error_code error;
 	llvm::raw_fd_ostream raw_stream(opt.getOutputFileName().c_str(), error);
-	pm.add(createPrintModulePass(&raw_stream));
+	pm.add(createPrintModulePass(raw_stream));
 	pm.run(mod);
 	raw_stream.close();
 
