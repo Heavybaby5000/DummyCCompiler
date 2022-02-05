@@ -1,0 +1,34 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install packages
+      run: sudo apt-get install -y llvm
+    - name: make
+      run: make
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install packages
+      run: sudo apt-get install -y llvm
+    - name: make
+      run: make
+    - name: make lib
+      run: make lib
+    - name: make run
+      run: make run
