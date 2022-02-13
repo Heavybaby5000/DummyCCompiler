@@ -77,7 +77,7 @@ bool LPCountPass::runOnLoop(llvm::Loop *L, llvm::LPPassManager &LPM){
        result++;
 
     //fprintf(stderr,"loop_count = %lld\n", (result.getZExtValue()));
-    llvm::errs() << "loop_count" << result << "\n";
+    llvm::errs() << "loop_count = " << result << "\n";
 
     return false;
 }
