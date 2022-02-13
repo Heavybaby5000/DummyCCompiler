@@ -2,7 +2,7 @@
 
 bool SCEVSample::runOnLoop(llvm::Loop *L, llvm::LPPassManager &LPM){
 	//getAnalysisでScalarEvolutionを取得
-	llvm::ScalarEvolution *SE = &(getAnalysis<llvm::ScalarEvolution>());
+	llvm::ScalarEvolution *SE = &getAnalysis<llvm::ScalarEvolutionWrapperPass>().getSE();
 
     //ExitingBlockを取得
 	llvm::BasicBlock *exiting_bb = L->getExitingBlock();
@@ -19,7 +19,7 @@ void SCEVSample::getAnalysisUsage(llvm::AnalysisUsage &AU) const{
 	//変更を加えない
 	AU.setPreservesAll();
 	//ScalarEvolutionを利用するのでaddRequired
-	AU.addRequired<llvm::ScalarEvolution>();
+	AU.addRequired<llvm::ScalarEvolutionWrapperPass>();
 }
 
 char SCEVSample::ID=0;

@@ -20,20 +20,27 @@ LLVM_FLAGS2 = --ldflags --libs
 LLVM_FLAGS3 = --cxxflags --ldflags --libs
 INC_FLAGS = -I$(INC_DIR)
 
+.PHONY: all
+all: $(LIB)
 
-all:$(PASS_OBJ) 
+$(LIB): $(PASS_OBJ)
 	mkdir -p $(BIN_DIR)
-	$(CC) -g -shared -o $(LIB) $(PASS_OBJ) 
+	$(CC) -g -shared -o $@ $<
 
 $(PASS_OBJ):$(PASS_SRC_PATH)
 	mkdir -p $(OBJ_DIR)
-	$(CC) -g $(PASS_SRC_PATH) $(INC_FLAGS) `$(CONFIG) $(LLVM_FLAGS)` -c -o $(PASS_OBJ) 
+	$(CC) -g $< $(INC_FLAGS) `$(CONFIG) $(LLVM_FLAGS)` -c -o $@ -fPIC
 
+.PHONY: clean
 clean:
-	rm -rf $(PASS_OBJ) $(LIB)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-sample:$(SAMPLE_DIR)/test.dc 
-	../../bin/dcc $(SAMPLE_DIR)/test.dc -o $(SAMPLE_DIR)/test.ll
+.PHONY: sample
+sample: $(SAMPLE_DIR)/test.ll
 
-run:
-	opt -load $(LIB) -easypass -debug-pass=Structure $(SAMPLE_DIR)/test.ll -S > /dev/null
+$(SAMPLE_DIR)/test.ll: $(SAMPLE_DIR)/test.dc
+	../../bin/dcc $< -o $@
+
+.PHONY: run
+run: $(SAMPLE_DIR)/test.ll $(LIB)
+	opt -load $(LIB) -easypass -debug-pass=Structure $< -S > /dev/null

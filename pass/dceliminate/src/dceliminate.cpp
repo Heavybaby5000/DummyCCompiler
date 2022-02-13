@@ -34,7 +34,7 @@ bool DCEliminatePass::runOnFunction(llvm::Function &F){
 		
 		//この命令の値を使用している命令がある場合は生きているとする
 		//load/store命令、call命令、終端命令(returnやbr)は生きている命令にする
-		if( !inst->use_empty() || llvm::isa<llvm::TerminatorInst>(inst)  || 
+		if( !inst->use_empty() || inst->isTerminator()  ||
 				llvm::isa<llvm::CallInst>(inst) || 
 				llvm::isa<llvm::LoadInst>(inst) || llvm::isa<llvm::StoreInst>(inst) )
 			continue;
