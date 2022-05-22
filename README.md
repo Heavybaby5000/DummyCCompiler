@@ -1,4 +1,5 @@
 ## 概要
+[![C/C++ CI](https://github.com/Heavybaby5000/DummyCCompiler/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/Heavybaby5000/DummyCCompiler/actions/workflows/c-cpp.yml)
 * LLVMのフロントエンド作成のExampleとして作成したLLVMのDummyC用フロントエンド
 * DummyCのソースコードをLLVM-IRに変換・出力
 
